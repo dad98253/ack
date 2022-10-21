@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Amsterdam Compiler Kit</title>
+  <meta name="description" content="A tiny cross-platform compiler and toolchain suite for C, Pascal and other languages, originally made famous by Minix.
+">
+
+  <link rel="stylesheet" href="main.css">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">The Amsterdam Compiler Kit</a>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <h2 id="what-is-it">What is it?</h2>
+
+<p>The Amsterdam Compiler Kit is a venerable piece of software that dates
+back to the early 1980s. It was originally written by <a href="http://www.cs.vu.nl/%7East">Andrew Tanenbaum</a> and <a href="http://www.cs.vu.nl/%7Eceriel">Ceriel Jacobs</a> as a commercial
+product; for many years it was also used as Minix’ native toolchain. After
+eventually failing as a commercial project, it was made open source under a
+BSD license in 2003 when it looked like it was going to be abandoned and the
+code lost.</p>
+
+<p>The ACK contains compilers for ANSI C, K&amp;R C, Pascal, Modula-2, Occam
+1, and a primitive Basic. It contains code generators for a large number of
+architectures, mostly 8 and 16 bit machines; there are also a set of generic
+optimisation, linker and librarian tools. Each language comes with its own
+runtime, so if you’re a C programmer you also get a libc. Compared to gcc, it
+is far smaller, faster and easier to port.</p>
+
+<p>This project currently hosts two versions of the ACK.</p>
+
+<ul>
+  <li>
+    <p>ACK 5.6 is an incremental update of Vrije Universiteit’s last release.
+This has had minimum fixes necessary to make it run on modern Linux
+machines; unfortunately, the build system is designed for the Unixes of
+yesteryear and is not really up to modern standards. This version is the
+most complete, but is probably not particularly useful as very few of the
+platforms it targets exist any more. This version is provided for
+reference and archival purposes and to provide a backup if the 6.0
+release should fail.</p>
+  </li>
+  <li>
+    <p>ACK 6.0 is a ground-up reworking of the whole compiler suite, with a
+lot of the more archaic features removed. It is intended to produce a
+modern compiler toolchain with which actually useful work can be done,
+and is where all the new development happens. Currently, not all of 5.6’s
+features have been ported, but those that have work considerably more
+reliably.</p>
+  </li>
+</ul>
+
+<h2 id="what-architectures-does-it-support">What architectures does it support?</h2>
+
+<p>It contains assembler and linker support for: 6500, 6800, 6805, 6809, ARM, i80,
+Z80, Z8000, i86, i386, 68000, 68020, NS32016, S2650, SPARC, VAX, PDP11 and
+VideoCore IV.</p>
+
+<p>It contains code generator support for: 6500, ARM, i80, Z80, Z8000, i86, i386,
+68000, 68020, NS32016, SPARC, VAX4, PDP11 and VideoCore IV.</p>
+
+<p>It supports these platforms: pc86, linux386, linux68k, linuxppc, linuxmips,
+cpm, rpi (VideoCore IV), pdpv7, msdos86 and msdos386.</p>
+
+<p>However, that doesn’t necessarily mean that the code is <em>working</em>. There is a
+lot of half-finished code in the repository. There is <em>tested</em> support for:
+i86, i386, 68000, i80, and VideoCore IV.</p>
+
+<p>If you’re interested in one of the other architectures, please ask on <a href="http://sourceforge.net/mail/?group_id=130811">the
+mailing list</a>. Some code
+archaeology will be required to enable a new target.</p>
+
+<h2 id="whats-the-generated-code-quality-like">What’s the generated code quality like?</h2>
+
+<p>Honestly? Not great.</p>
+
+<p>The ACK was designed in an era when processor were CISC memory-centric
+architectures with very small numbers of registers. For these architectures, it
+produces middling good results, although modern compilers do far better (at the
+expense of being enormously larger and more complex).</p>
+
+<p>However, for register-centric architectures, it’s pretty much a dead loss. The
+register allocator cannot make effective use of large numbers of registers and
+the underlying architecture requires nearly all operations to touch memory. It
+is very easy to port to a new architecture… but the generated code is
+terrible.</p>
+
+<p>I, dtrg, cannot honestly recommend using the ACK for production code on modern
+architectures unless as a stop-gap measure or unless the other benefits of the
+ACK (e.g. having a very lightweight turnkey toolchain is valuable to you)
+outweigh the code quality.</p>
+
+<h2 id="havent-i-seen-this-before-somewhere">Haven’t I seen this before somewhere?</h2>
+
+<p>Quite likely. The ACK has been used as the standard Minix compiler for
+years. While the ACK was still commercial, this was done by distributing
+binaries; when it get opened, a version was forked off and is now used as
+part of the Minix base build. You can find <a href="https://gforge.cs.vu.nl/plugins/scmsvn/viewcvs.php/trunk/bigports/ackpack/?root=minix">Minix’s
+version here</a>. This is an extremely stripped down variant that supports
+only the Minix platform on the i386 and i86 architectures and was done by <a href="http://www.laurasia.com.au/ack">Michael Kennett</a>.</p>
+
+<p>In addition, the original 5.5 release is still available on <a href="http://www.cs.vu.nl/ack/">the Vrije Universiteit ACK page</a>.</p>
+
+<p>There may also be other versions elsewhere. The ACK is BSD licensed and as
+a result if people want to fork the codebase and use it elsewhere, they don’t
+even need to ask, or indeed tell anyone. If you know of any other uses of the
+compiler, please let me (dtrg) know — I’d like to put in a link.</p>
+
+<h2 id="whats-the-involvement-of-andrew-tanenbaum-ceriel-jacobs-and-vrije-universiteit">What’s the involvement of Andrew Tanenbaum, Ceriel Jacobs and Vrije Universiteit?</h2>
+
+<p>They have no official involvement.</p>
+
+<p>They’re aware that I, dtrg, am doing this, and are quite happy with it and
+maintain an interest, but are not actively participating in the project. (Due
+to being busy people with other things to do.) I, dtrg, have nothing to do
+with Vrije Universiteit and have never even been to the Netherlands.</p>
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Amsterdam Compiler Kit</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>The Amsterdam Compiler Kit</li>
+          <li>Nominally <a href="mailto:dg@cowlark.com">dg@cowlark.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>A tiny cross-platform compiler and toolchain suite for C, Pascal and other languages, originally made famous by Minix.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
